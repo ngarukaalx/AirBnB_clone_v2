@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# connects to my servers
+
+ip=$1
+ssh ubuntu@"$ip"
