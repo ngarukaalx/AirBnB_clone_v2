@@ -32,6 +32,7 @@ def do_deploy(archive_path):
         run(f"mkdir -p {remote_path}")
         # decompress to remote_path
         run(f"tar -xzf /tmp/{archive_file} -C {remote_path}")
+        run(f"mv {remote_path}/web_static/* {remote_path}")
         # Delete archive from web server
         run(f"rm /tmp/{archive_file}")
 
