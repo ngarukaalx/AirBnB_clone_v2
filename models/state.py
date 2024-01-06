@@ -19,13 +19,18 @@ class State(BaseModel, Base):
     else:
         name = ""
 
-    @property
-    def cities(self):
-        """Returns the list of City instances with state_id
-        equals to the current State.id"""
-        city_list = []
-        all_cities = storage.all(City)
-        for key, city in all_cities.items():
-            if city.state_id == self.id:
-                city_list.append(city)
-        return city_list
+    def __init__(self, *args, **kwargs):
+        """initializes state"""
+        super().__init__(*args, **kwargs)
+
+    if getenv('HBNB_TYPE_STORAGE') != 'db':
+        @property
+        def cities(self):
+            """Returns the list of City instances with state_id
+            equals to the current State.id"""
+            city_list = []
+            all_cities = storage.all(City)
+            for key, city in all_cities.items():
+                if city.state_id == self.id:
+                    city_list.append(city)
+            return city_list
