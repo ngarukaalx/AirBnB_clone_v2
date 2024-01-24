@@ -31,22 +31,17 @@ class DBStorage:
         from models.place import Place
         from models.review import Review
         from models.amenity import Amenity
-        obj_dict = {}
+        new_dict = {}
         classes = {"State": State, "City": City, "User": User,
                    "Place": Place, "Review": Review, "Amenity": Amenity}
 
-        if cls:
-            objs = self.__session.query(classes[cls.__name__]).all()
-            for obj in objs:
-                key = '{}.{}'.format(cls.__name__, obj.id)
-                obj_dict[key] = obj.to_dict()
-        else:
-            for cls in classes.values():
-                objs = self.__session.query(cls).all()
+        for clss in classes:
+            if cls is None or cls is classes[clss] or cls is clss:
+                objs = self.__session.query(classes[clss]).all()
                 for obj in objs:
-                    key = '{}.{}'.format(type(obj).__name__, obj.id)
-                    obj_dict[key] = obj.to_dict()
-        return obj_dict
+                    key = obj.__class__.__name__ + '.' + obj.id
+                    new_dict[key] = obj
+        return (new_dict)
 
     def new(self, obj):
         """Add the object to the current database session"""
